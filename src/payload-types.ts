@@ -69,9 +69,9 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    page: Page;
-    project: Project;
-    service: Service;
+    services: Service;
+    projects: Project;
+    'parent-services': ParentService;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -81,9 +81,9 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    page: PageSelect<false> | PageSelect<true>;
-    project: ProjectSelect<false> | ProjectSelect<true>;
-    service: ServiceSelect<false> | ServiceSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    'parent-services': ParentServicesSelect<false> | ParentServicesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -164,47 +164,225 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "page".
- */
-export interface Page {
-  id: number;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "project".
- */
-export interface Project {
-  id: number;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "service".
+ * via the `definition` "services".
  */
 export interface Service {
   id: number;
-  alt: string;
+  name: string;
+  description: string;
+  slug: string;
+  icon: number | Media;
+  /**
+   * Lottie animation JSON
+   */
+  animatedIcon?: string | null;
+  hero: {
+    title: string;
+    subheading: string;
+    buttonText: string;
+    image: number | Media;
+  };
+  parentService?: (number | null) | ParentService;
+  pageSections?:
+    | (
+        | {
+            headerText: string;
+            subheading: string;
+            bulletPointCards?:
+              | {
+                  title: string;
+                  description: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'featureSection';
+          }
+        | {
+            text: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            imageLeft?: boolean | null;
+            image: number | Media;
+            button?: {
+              buttonText?: string | null;
+              link?: string | null;
+            };
+            counter?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'featureCardHorizontal';
+          }
+        | {
+            text: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'singleColumnCenterText';
+          }
+        | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'spacer';
+          }
+      )[]
+    | null;
+  seo: {
+    title: string;
+    description: string;
+    keywords?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "parent-services".
+ */
+export interface ParentService {
+  id: number;
+  name: string;
+  description: string;
+  slug: string;
+  icon: number | Media;
+  /**
+   * Lottie animation JSON
+   */
+  animatedIcon?: string | null;
+  hero: {
+    title: string;
+    subheading: string;
+    buttonText: string;
+    image: number | Media;
+  };
+  services?: (number | Service)[] | null;
+  pageSections?:
+    | (
+        | {
+            headerText: string;
+            subheading: string;
+            bulletPointCards?:
+              | {
+                  title: string;
+                  description: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'featureSection';
+          }
+        | {
+            text: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            imageLeft?: boolean | null;
+            image: number | Media;
+            button?: {
+              buttonText?: string | null;
+              link?: string | null;
+            };
+            counter?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'featureCardHorizontal';
+          }
+        | {
+            text: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'singleColumnCenterText';
+          }
+        | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'spacer';
+          }
+      )[]
+    | null;
+  seo: {
+    title: string;
+    description: string;
+    keywords?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  title: string;
+  description: string;
+  slug: string;
+  cover: number | Media;
+  services?: (number | Service)[] | null;
+  featured?: boolean | null;
+  /**
+   * Lower numbers appear first
+   */
+  displayOrder?: number | null;
+  seo: {
+    title: string;
+    description: string;
+    keywords?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -239,16 +417,16 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'page';
-        value: number | Page;
+        relationTo: 'services';
+        value: number | Service;
       } | null)
     | ({
-        relationTo: 'project';
+        relationTo: 'projects';
         value: number | Project;
       } | null)
     | ({
-        relationTo: 'service';
-        value: number | Service;
+        relationTo: 'parent-services';
+        value: number | ParentService;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -332,44 +510,179 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "page_select".
+ * via the `definition` "services_select".
  */
-export interface PageSelect<T extends boolean = true> {
-  alt?: T;
+export interface ServicesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  slug?: T;
+  icon?: T;
+  animatedIcon?: T;
+  hero?:
+    | T
+    | {
+        title?: T;
+        subheading?: T;
+        buttonText?: T;
+        image?: T;
+      };
+  parentService?: T;
+  pageSections?:
+    | T
+    | {
+        featureSection?:
+          | T
+          | {
+              headerText?: T;
+              subheading?: T;
+              bulletPointCards?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        featureCardHorizontal?:
+          | T
+          | {
+              text?: T;
+              imageLeft?: T;
+              image?: T;
+              button?:
+                | T
+                | {
+                    buttonText?: T;
+                    link?: T;
+                  };
+              counter?: T;
+              id?: T;
+              blockName?: T;
+            };
+        singleColumnCenterText?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+              blockName?: T;
+            };
+        spacer?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        keywords?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "project_select".
+ * via the `definition` "projects_select".
  */
-export interface ProjectSelect<T extends boolean = true> {
-  alt?: T;
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  slug?: T;
+  cover?: T;
+  services?: T;
+  featured?: T;
+  displayOrder?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        keywords?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "service_select".
+ * via the `definition` "parent-services_select".
  */
-export interface ServiceSelect<T extends boolean = true> {
-  alt?: T;
+export interface ParentServicesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  slug?: T;
+  icon?: T;
+  animatedIcon?: T;
+  hero?:
+    | T
+    | {
+        title?: T;
+        subheading?: T;
+        buttonText?: T;
+        image?: T;
+      };
+  services?: T;
+  pageSections?:
+    | T
+    | {
+        featureSection?:
+          | T
+          | {
+              headerText?: T;
+              subheading?: T;
+              bulletPointCards?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        featureCardHorizontal?:
+          | T
+          | {
+              text?: T;
+              imageLeft?: T;
+              image?: T;
+              button?:
+                | T
+                | {
+                    buttonText?: T;
+                    link?: T;
+                  };
+              counter?: T;
+              id?: T;
+              blockName?: T;
+            };
+        singleColumnCenterText?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+              blockName?: T;
+            };
+        spacer?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        keywords?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
