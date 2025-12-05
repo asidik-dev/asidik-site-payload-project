@@ -11,6 +11,13 @@ import { r2Storage } from '@payloadcms/storage-r2'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Services, Processes, Projects, Testimonials, ParentServices } from './collections/Lots'
+import { HomePageGlobals } from '@/collections/global/HomePageGlobals'
+import {
+  CardBulletPointSection,
+  FeatureCardBlock,
+  SingleColumnCenterRichTextBlock,
+  SpacerBlock,
+} from '@/collections/blocks/blocks'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -31,10 +38,12 @@ export default buildConfig({
     },
     livePreview: {
       url: 'http://localhost:4321',
-      collections: ['projects']
+      collections: ['projects', 'parent-services']
     },
   },
+  blocks: [SingleColumnCenterRichTextBlock, SpacerBlock, CardBulletPointSection, FeatureCardBlock],
   collections: [Users, Media, Services, Projects, ParentServices],
+  globals: [HomePageGlobals],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

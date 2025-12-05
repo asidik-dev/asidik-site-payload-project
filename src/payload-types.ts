@@ -65,7 +65,12 @@ export interface Config {
   auth: {
     users: UserAuthOperations;
   };
-  blocks: {};
+  blocks: {
+    SingleColumnCenterRichTextBlock: SingleColumnCenterRichTextBlock;
+    SpacerBlock: SpacerBlock;
+    CardBulletPointSection: CardBulletPointSection;
+    FeatureCardBlock: FeatureCardBlock;
+  };
   collections: {
     users: User;
     media: Media;
@@ -92,8 +97,12 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    homePageGlobals: HomePageGlobal;
+  };
+  globalsSelect: {
+    homePageGlobals: HomePageGlobalsSelect<false> | HomePageGlobalsSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
@@ -123,6 +132,110 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SingleColumnCenterRichTextBlock".
+ */
+export interface SingleColumnCenterRichTextBlock {
+  Copy: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'SingleColumnCenterRichTextBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpacerBlock".
+ */
+export interface SpacerBlock {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'SpacerBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CardBulletPointSection".
+ */
+export interface CardBulletPointSection {
+  headerText: string;
+  subheading: string;
+  bulletPoints: {
+    title: string;
+    description: string;
+    id?: string | null;
+    blockName?: string | null;
+    blockType: 'BulletPointBlock';
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'CardBulletPointSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureCardBlock".
+ */
+export interface FeatureCardBlock {
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  imageLeft: boolean;
+  image: number | Media;
+  button?:
+    | {
+        buttonText: string;
+        buttonLink: string;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'ButtonBlock';
+      }[]
+    | null;
+  counter?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'FeatureCardBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -147,23 +260,6 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "services".
  */
 export interface Service {
@@ -175,84 +271,89 @@ export interface Service {
   /**
    * Lottie animation JSON
    */
-  animatedIcon?: string | null;
+  animatedIcon: string;
   hero: {
     title: string;
     subheading: string;
     buttonText: string;
     image: number | Media;
   };
-  parentService?: (number | null) | ParentService;
   pageSections?:
     | (
         | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'SpacerBlock';
+          }
+        | {
+            Copy: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'SingleColumnCenterRichTextBlock';
+          }
+        | {
             headerText: string;
             subheading: string;
-            bulletPointCards?:
+            bulletPoints: {
+              title: string;
+              description: string;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'BulletPointBlock';
+            }[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'CardBulletPointSection';
+          }
+        | {
+            text: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            imageLeft: boolean;
+            image: number | Media;
+            button?:
               | {
-                  title: string;
-                  description: string;
+                  buttonText: string;
+                  buttonLink: string;
                   id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'ButtonBlock';
                 }[]
               | null;
+            counter?: number | null;
             id?: string | null;
             blockName?: string | null;
-            blockType: 'featureSection';
-          }
-        | {
-            text: {
-              root: {
-                type: string;
-                children: {
-                  type: any;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            };
-            imageLeft?: boolean | null;
-            image: number | Media;
-            button?: {
-              buttonText?: string | null;
-              link?: string | null;
-            };
-            counter?: string | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'featureCardHorizontal';
-          }
-        | {
-            text: {
-              root: {
-                type: string;
-                children: {
-                  type: any;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            };
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'singleColumnCenterText';
-          }
-        | {
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'spacer';
+            blockType: 'FeatureCardBlock';
           }
       )[]
     | null;
+  parentService?: (number | null) | ParentService;
   seo: {
     title: string;
     description: string;
@@ -260,6 +361,7 @@ export interface Service {
   };
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -269,96 +371,15 @@ export interface ParentService {
   id: number;
   name: string;
   description: string;
-  slug: string;
   icon: number | Media;
   /**
    * Lottie animation JSON
    */
-  animatedIcon?: string | null;
-  hero: {
-    title: string;
-    subheading: string;
-    buttonText: string;
-    image: number | Media;
-  };
+  animatedIcon: string;
   services?: (number | Service)[] | null;
-  pageSections?:
-    | (
-        | {
-            headerText: string;
-            subheading: string;
-            bulletPointCards?:
-              | {
-                  title: string;
-                  description: string;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'featureSection';
-          }
-        | {
-            text: {
-              root: {
-                type: string;
-                children: {
-                  type: any;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            };
-            imageLeft?: boolean | null;
-            image: number | Media;
-            button?: {
-              buttonText?: string | null;
-              link?: string | null;
-            };
-            counter?: string | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'featureCardHorizontal';
-          }
-        | {
-            text: {
-              root: {
-                type: string;
-                children: {
-                  type: any;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            };
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'singleColumnCenterText';
-          }
-        | {
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'spacer';
-          }
-      )[]
-    | null;
-  seo: {
-    title: string;
-    description: string;
-    keywords?: string | null;
-  };
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -370,6 +391,7 @@ export interface Project {
   description: string;
   slug: string;
   cover: number | Media;
+  forceSmall?: boolean | null;
   services?: (number | Service)[] | null;
   featured?: boolean | null;
   /**
@@ -383,6 +405,7 @@ export interface Project {
   };
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -526,26 +549,43 @@ export interface ServicesSelect<T extends boolean = true> {
         buttonText?: T;
         image?: T;
       };
-  parentService?: T;
   pageSections?:
     | T
     | {
-        featureSection?:
+        SpacerBlock?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+        SingleColumnCenterRichTextBlock?:
+          | T
+          | {
+              Copy?: T;
+              id?: T;
+              blockName?: T;
+            };
+        CardBulletPointSection?:
           | T
           | {
               headerText?: T;
               subheading?: T;
-              bulletPointCards?:
+              bulletPoints?:
                 | T
                 | {
-                    title?: T;
-                    description?: T;
-                    id?: T;
+                    BulletPointBlock?:
+                      | T
+                      | {
+                          title?: T;
+                          description?: T;
+                          id?: T;
+                          blockName?: T;
+                        };
                   };
               id?: T;
               blockName?: T;
             };
-        featureCardHorizontal?:
+        FeatureCardBlock?:
           | T
           | {
               text?: T;
@@ -554,27 +594,21 @@ export interface ServicesSelect<T extends boolean = true> {
               button?:
                 | T
                 | {
-                    buttonText?: T;
-                    link?: T;
+                    ButtonBlock?:
+                      | T
+                      | {
+                          buttonText?: T;
+                          buttonLink?: T;
+                          id?: T;
+                          blockName?: T;
+                        };
                   };
               counter?: T;
               id?: T;
               blockName?: T;
             };
-        singleColumnCenterText?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-              blockName?: T;
-            };
-        spacer?:
-          | T
-          | {
-              id?: T;
-              blockName?: T;
-            };
       };
+  parentService?: T;
   seo?:
     | T
     | {
@@ -584,6 +618,7 @@ export interface ServicesSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -594,6 +629,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   description?: T;
   slug?: T;
   cover?: T;
+  forceSmall?: T;
   services?: T;
   featured?: T;
   displayOrder?: T;
@@ -606,6 +642,7 @@ export interface ProjectsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -614,75 +651,12 @@ export interface ProjectsSelect<T extends boolean = true> {
 export interface ParentServicesSelect<T extends boolean = true> {
   name?: T;
   description?: T;
-  slug?: T;
   icon?: T;
   animatedIcon?: T;
-  hero?:
-    | T
-    | {
-        title?: T;
-        subheading?: T;
-        buttonText?: T;
-        image?: T;
-      };
   services?: T;
-  pageSections?:
-    | T
-    | {
-        featureSection?:
-          | T
-          | {
-              headerText?: T;
-              subheading?: T;
-              bulletPointCards?:
-                | T
-                | {
-                    title?: T;
-                    description?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        featureCardHorizontal?:
-          | T
-          | {
-              text?: T;
-              imageLeft?: T;
-              image?: T;
-              button?:
-                | T
-                | {
-                    buttonText?: T;
-                    link?: T;
-                  };
-              counter?: T;
-              id?: T;
-              blockName?: T;
-            };
-        singleColumnCenterText?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-              blockName?: T;
-            };
-        spacer?:
-          | T
-          | {
-              id?: T;
-              blockName?: T;
-            };
-      };
-  seo?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        keywords?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -723,6 +697,52 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homePageGlobals".
+ */
+export interface HomePageGlobal {
+  id: number;
+  Home: {
+    IntroText: string;
+    projectsHeader: string;
+    servicesHeader: string;
+    projectsButtonText: string;
+    Seo: {
+      title: string;
+      description: string;
+      keywords?: string | null;
+    };
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homePageGlobals_select".
+ */
+export interface HomePageGlobalsSelect<T extends boolean = true> {
+  Home?:
+    | T
+    | {
+        IntroText?: T;
+        projectsHeader?: T;
+        servicesHeader?: T;
+        projectsButtonText?: T;
+        Seo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              keywords?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
