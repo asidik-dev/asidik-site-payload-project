@@ -1,5 +1,7 @@
 import { GlobalConfig } from 'payload'
 
+const previewBaseurl = process.env.LIVE_PREVIEW_URL ?? 'https://asidik.tomwojciechowski.workers.dev'
+
 export const HomePageGlobals: GlobalConfig = {
   slug: 'homePageGlobals',
   access: {
@@ -9,9 +11,9 @@ export const HomePageGlobals: GlobalConfig = {
     drafts: true,
   },
   admin: {
-    preview: ({slug}) => `http://localhost:4321`,
+    preview: ({slug}) => `${previewBaseurl}`,
     livePreview: {
-      url: `http://localhost:4321`,
+      url: `${previewBaseurl}`,
     }
   },
   fields: [

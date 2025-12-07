@@ -1,5 +1,7 @@
 import { GlobalConfig } from 'payload'
 
+const previewBaseurl = process.env.LIVE_PREVIEW_URL ?? 'https://asidik.tomwojciechowski.workers.dev'
+
 export const ServicePageGlobals: GlobalConfig = {
   slug: 'servicePageGlobals',
   access: {
@@ -9,9 +11,9 @@ export const ServicePageGlobals: GlobalConfig = {
     drafts: true,
   },
   admin: {
-    preview: ({ slug }) => `http://localhost:4321/services`,
+    preview: ({ slug }) => `${previewBaseurl}/services`,
     livePreview: {
-      url: `http://localhost:4321/services`,
+      url: `${previewBaseurl}/services`,
     },
   },
   fields: [

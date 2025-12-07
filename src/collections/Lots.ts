@@ -6,6 +6,8 @@ import {
   SpacerBlock,
 } from '@/collections/blocks/blocks'
 
+const previewBaseurl = process.env.LIVE_PREVIEW_URL ?? 'https://asidik.tomwojciechowski.workers.dev'
+
 // Collections
 export const Services: CollectionConfig = {
   slug: 'services',
@@ -14,10 +16,10 @@ export const Services: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-    preview: ({ slug }) => `http://localhost:4321/services/${slug}`,
+    preview: ({ slug }) => `${previewBaseurl}/services/${slug}`,
     livePreview: {
       url: ({ collectionConfig, req, data }) => {
-        return `http://localhost:4321/services/${data.slug}`
+        return `${previewBaseurl}/services/${data.slug}`
       },
     },
   },
@@ -134,10 +136,10 @@ export const ParentServices: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-    preview: ({ slug }) => `http://localhost:4321/services`,
+    preview: ({ slug }) => `${previewBaseurl}/services`,
     livePreview: {
       url: ({ collectionConfig, req, data }) => {
-        return `http://localhost:4321/services`
+        return `${previewBaseurl}/services`
       },
     },
   },
@@ -192,10 +194,10 @@ export const Projects: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'services', 'featured'],
-    preview: ({ slug }) => `http://localhost:4321/projects/${slug}`,
+    preview: ({ slug }) => `${previewBaseurl}/projects/${slug}`,
     livePreview: {
       url: ({ collectionConfig, req, data }) => {
-        return `http://localhost:4321/projects/${data.slug}`
+        return `${previewBaseurl}/projects/${data.slug}`
       },
     },
   },
@@ -295,10 +297,10 @@ export const Processes: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
-        preview: ({ slug }) => `http://localhost:4321/about`,
+        preview: ({ slug }) => `${previewBaseurl}/about`,
     livePreview: {
       url: ({collectionConfig, req, data}) => {
-        return `http://localhost:4321/about`
+        return `${previewBaseurl}/about`
       },
     },
   },
@@ -338,10 +340,10 @@ export const Testimonials: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'clientName',
-        preview: ({ slug }) => `http://localhost:4321/about`,
+        preview: ({ slug }) => `${previewBaseurl}/about`,
     livePreview: {
       url: ({collectionConfig, req, data}) => {
-        return `http://localhost:4321/about`
+        return `${previewBaseurl}/about`
       },
     },
   },
