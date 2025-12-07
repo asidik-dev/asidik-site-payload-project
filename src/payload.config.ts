@@ -42,6 +42,7 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+
     livePreview: {
       // url: ({collectionConfig, globalConfig, req, locale, data}) => {
       //
@@ -105,6 +106,21 @@ export default buildConfig({
         },
       ],
     },
+
+  },
+    localization: {
+    locales: [
+      {
+        label: 'English',
+        code: 'en',
+      },
+      {
+        label: 'French',
+        code: 'fr',
+      },
+    ],
+    defaultLocale: 'en', // required
+    fallback: true, // defaults to true
   },
   blocks: [SingleColumnCenterRichTextBlock, SpacerBlock, CardBulletPointSection, FeatureCardBlock],
   collections: [Users, Media, Services, Projects, ParentServices, Testimonials, Processes],

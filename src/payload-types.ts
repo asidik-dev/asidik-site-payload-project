@@ -101,7 +101,7 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'fr') | ('en' | 'fr')[];
   globals: {
     homePageGlobals: HomePageGlobal;
     aboutPageGlobals: AboutPageGlobal;
@@ -118,7 +118,7 @@ export interface Config {
     sentPageGlobals: SentPageGlobalsSelect<false> | SentPageGlobalsSelect<true>;
     servicePageGlobals: ServicePageGlobalsSelect<false> | ServicePageGlobalsSelect<true>;
   };
-  locale: null;
+  locale: 'en' | 'fr';
   user: User & {
     collection: 'users';
   };

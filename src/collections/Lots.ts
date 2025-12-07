@@ -95,7 +95,7 @@ export const Services: CollectionConfig = {
         SpacerBlock,
         SingleColumnCenterRichTextBlock,
         CardBulletPointSection,
-        FeatureCardBlock,
+        FeatureCardBlock
       ],
       blocks: [],
     },
