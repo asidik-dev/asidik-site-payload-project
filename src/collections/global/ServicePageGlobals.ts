@@ -1,7 +1,7 @@
 import { GlobalConfig } from 'payload'
 
-export const HomePageGlobals: GlobalConfig = {
-  slug: 'homePageGlobals',
+export const ServicePageGlobals: GlobalConfig = {
+  slug: 'servicePageGlobals',
   access: {
     read: () => true,
   },
@@ -9,34 +9,39 @@ export const HomePageGlobals: GlobalConfig = {
     drafts: true,
   },
   admin: {
-    preview: ({slug}) => `http://localhost:4321`,
+    preview: ({ slug }) => `http://localhost:4321/services`,
     livePreview: {
-      url: `http://localhost:4321`,
-    }
+      url: `http://localhost:4321/services`,
+    },
   },
   fields: [
     {
-      name: 'Home',
+      name: 'Services',
       type: 'group',
       fields: [
         {
-          name: 'IntroText',
-          type: 'textarea',
-          required: true,
-        },
-        {
-          name: 'projectsHeader',
+          name: 'headerText',
           type: 'text',
           required: true,
         },
         {
-          name: 'servicesHeader',
+          name: 'viewWorkHeader',
           type: 'text',
           required: true,
         },
         {
-          name: 'projectsButtonText',
+          name: 'viewWorkText',
           type: 'text',
+          required: true,
+        },
+        {
+          name: 'viewWorkButtonText',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'introductoryParagraph',
+          type: 'richText',
           required: true,
         },
         {

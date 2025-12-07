@@ -77,6 +77,8 @@ export interface Config {
     services: Service;
     projects: Project;
     'parent-services': ParentService;
+    testimonials: Testimonial;
+    processes: Process;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -89,6 +91,8 @@ export interface Config {
     services: ServicesSelect<false> | ServicesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     'parent-services': ParentServicesSelect<false> | ParentServicesSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    processes: ProcessesSelect<false> | ProcessesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -97,11 +101,22 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
+  fallbackLocale: null;
   globals: {
     homePageGlobals: HomePageGlobal;
+    aboutPageGlobals: AboutPageGlobal;
+    ourWorkPageGlobals: OurWorkPageGlobal;
+    contactPageGlobals: ContactPageGlobal;
+    sentPageGlobals: SentPageGlobal;
+    servicePageGlobals: ServicePageGlobal;
   };
   globalsSelect: {
     homePageGlobals: HomePageGlobalsSelect<false> | HomePageGlobalsSelect<true>;
+    aboutPageGlobals: AboutPageGlobalsSelect<false> | AboutPageGlobalsSelect<true>;
+    ourWorkPageGlobals: OurWorkPageGlobalsSelect<false> | OurWorkPageGlobalsSelect<true>;
+    contactPageGlobals: ContactPageGlobalsSelect<false> | ContactPageGlobalsSelect<true>;
+    sentPageGlobals: SentPageGlobalsSelect<false> | SentPageGlobalsSelect<true>;
+    servicePageGlobals: ServicePageGlobalsSelect<false> | ServicePageGlobalsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -393,6 +408,27 @@ export interface Project {
   cover: number | Media;
   forceSmall?: boolean | null;
   services?: (number | Service)[] | null;
+  detailedText: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  additionalImages?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
   featured?: boolean | null;
   /**
    * Lower numbers appear first
@@ -403,6 +439,36 @@ export interface Project {
     description: string;
     keywords?: string | null;
   };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  clientName: string;
+  quote: string;
+  companyName: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "processes".
+ */
+export interface Process {
+  id: number;
+  title: string;
+  description: string;
+  processNumber: string;
+  /**
+   * Lower numbers appear first
+   */
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -450,6 +516,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'parent-services';
         value: number | ParentService;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'processes';
+        value: number | Process;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -631,6 +705,13 @@ export interface ProjectsSelect<T extends boolean = true> {
   cover?: T;
   forceSmall?: T;
   services?: T;
+  detailedText?: T;
+  additionalImages?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   featured?: T;
   displayOrder?: T;
   seo?:
@@ -654,6 +735,31 @@ export interface ParentServicesSelect<T extends boolean = true> {
   icon?: T;
   animatedIcon?: T;
   services?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  clientName?: T;
+  quote?: T;
+  companyName?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "processes_select".
+ */
+export interface ProcessesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  processNumber?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -721,6 +827,162 @@ export interface HomePageGlobal {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aboutPageGlobals".
+ */
+export interface AboutPageGlobal {
+  id: number;
+  About: {
+    headerText: string;
+    introductoryParagraph: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    processHeader: string;
+    testimonialsHeader: string;
+    Seo: {
+      title: string;
+      description: string;
+      keywords?: string | null;
+    };
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ourWorkPageGlobals".
+ */
+export interface OurWorkPageGlobal {
+  id: number;
+  OurWork: {
+    headerText: string;
+    Seo: {
+      title: string;
+      description: string;
+      keywords?: string | null;
+    };
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactPageGlobals".
+ */
+export interface ContactPageGlobal {
+  id: number;
+  Contact: {
+    headerText: string;
+    contactExplanationText: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    submitButtonText: string;
+    Seo: {
+      title: string;
+      description: string;
+      keywords?: string | null;
+    };
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sentPageGlobals".
+ */
+export interface SentPageGlobal {
+  id: number;
+  ContactSent: {
+    successHeader: string;
+    successText: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    buttonText: string;
+    /**
+     * Lottie animation JSON
+     */
+    successIconAnimation: string;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "servicePageGlobals".
+ */
+export interface ServicePageGlobal {
+  id: number;
+  Services: {
+    headerText: string;
+    viewWorkHeader: string;
+    viewWorkText: string;
+    viewWorkButtonText: string;
+    introductoryParagraph: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    Seo: {
+      title: string;
+      description: string;
+      keywords?: string | null;
+    };
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homePageGlobals_select".
  */
 export interface HomePageGlobalsSelect<T extends boolean = true> {
@@ -731,6 +993,121 @@ export interface HomePageGlobalsSelect<T extends boolean = true> {
         projectsHeader?: T;
         servicesHeader?: T;
         projectsButtonText?: T;
+        Seo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              keywords?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aboutPageGlobals_select".
+ */
+export interface AboutPageGlobalsSelect<T extends boolean = true> {
+  About?:
+    | T
+    | {
+        headerText?: T;
+        introductoryParagraph?: T;
+        processHeader?: T;
+        testimonialsHeader?: T;
+        Seo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              keywords?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ourWorkPageGlobals_select".
+ */
+export interface OurWorkPageGlobalsSelect<T extends boolean = true> {
+  OurWork?:
+    | T
+    | {
+        headerText?: T;
+        Seo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              keywords?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactPageGlobals_select".
+ */
+export interface ContactPageGlobalsSelect<T extends boolean = true> {
+  Contact?:
+    | T
+    | {
+        headerText?: T;
+        contactExplanationText?: T;
+        submitButtonText?: T;
+        Seo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              keywords?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sentPageGlobals_select".
+ */
+export interface SentPageGlobalsSelect<T extends boolean = true> {
+  ContactSent?:
+    | T
+    | {
+        successHeader?: T;
+        successText?: T;
+        buttonText?: T;
+        successIconAnimation?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "servicePageGlobals_select".
+ */
+export interface ServicePageGlobalsSelect<T extends boolean = true> {
+  Services?:
+    | T
+    | {
+        headerText?: T;
+        viewWorkHeader?: T;
+        viewWorkText?: T;
+        viewWorkButtonText?: T;
+        introductoryParagraph?: T;
         Seo?:
           | T
           | {

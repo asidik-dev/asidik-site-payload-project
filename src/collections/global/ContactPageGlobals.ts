@@ -1,41 +1,36 @@
 import { GlobalConfig } from 'payload'
 
-export const HomePageGlobals: GlobalConfig = {
-  slug: 'homePageGlobals',
+export const ContactPageGlobals: GlobalConfig = {
+  slug: 'contactPageGlobals',
   access: {
     read: () => true,
   },
   versions: {
     drafts: true,
   },
-  admin: {
-    preview: ({slug}) => `http://localhost:4321`,
+    admin: {
+    preview: ({slug}) => `http://localhost:4321/contact`,
     livePreview: {
-      url: `http://localhost:4321`,
+      url: `http://localhost:4321/contact`,
     }
   },
   fields: [
     {
-      name: 'Home',
+      name: 'Contact',
       type: 'group',
       fields: [
         {
-          name: 'IntroText',
-          type: 'textarea',
-          required: true,
-        },
-        {
-          name: 'projectsHeader',
+          name: 'headerText',
           type: 'text',
           required: true,
         },
         {
-          name: 'servicesHeader',
-          type: 'text',
+          name: 'contactExplanationText',
+          type: 'richText',
           required: true,
         },
         {
-          name: 'projectsButtonText',
+          name: 'submitButtonText',
           type: 'text',
           required: true,
         },

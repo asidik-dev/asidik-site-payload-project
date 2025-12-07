@@ -1,4 +1,4 @@
-import type { CollectionConfig, GlobalConfig } from 'payload'
+import type { CollectionConfig } from 'payload'
 import {
   CardBulletPointSection,
   FeatureCardBlock,
@@ -14,6 +14,12 @@ export const Services: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+    preview: ({ slug }) => `http://localhost:4321/services/${slug}`,
+    livePreview: {
+      url: ({ collectionConfig, req, data }) => {
+        return `http://localhost:4321/services/${data.slug}`
+      },
+    },
   },
   access: {
     read: () => true,
@@ -85,8 +91,13 @@ export const Services: CollectionConfig = {
     {
       name: 'pageSections',
       type: 'blocks',
-      blockReferences: [SpacerBlock, SingleColumnCenterRichTextBlock, CardBulletPointSection, FeatureCardBlock],
-      blocks: []
+      blockReferences: [
+        SpacerBlock,
+        SingleColumnCenterRichTextBlock,
+        CardBulletPointSection,
+        FeatureCardBlock,
+      ],
+      blocks: [],
     },
     {
       name: 'parentService',
@@ -119,10 +130,16 @@ export const Services: CollectionConfig = {
 export const ParentServices: CollectionConfig = {
   slug: 'parent-services',
   versions: {
-    drafts: true
+    drafts: true,
   },
   admin: {
     useAsTitle: 'name',
+    preview: ({ slug }) => `http://localhost:4321/services`,
+    livePreview: {
+      url: ({ collectionConfig, req, data }) => {
+        return `http://localhost:4321/services`
+      },
+    },
   },
   access: {
     read: () => true,
@@ -156,7 +173,6 @@ export const ParentServices: CollectionConfig = {
           Field: '/components/fields/LottieField#LottieField',
           Cell: '/components/cells/LottieCell#LottieCell',
         },
-
       },
     },
     {
@@ -176,6 +192,12 @@ export const Projects: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'services', 'featured'],
+    preview: ({ slug }) => `http://localhost:4321/projects/${slug}`,
+    livePreview: {
+      url: ({ collectionConfig, req, data }) => {
+        return `http://localhost:4321/projects/${data.slug}`
+      },
+    },
   },
   access: {
     read: () => true,
@@ -213,6 +235,23 @@ export const Projects: CollectionConfig = {
       type: 'relationship',
       relationTo: 'services',
       hasMany: true,
+    },
+    {
+      name: 'detailedText',
+      type: 'richText',
+      required: true,
+    },
+    {
+      name: 'additionalImages',
+      type: 'array',
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+      ],
     },
     {
       name: 'featured',
@@ -256,6 +295,12 @@ export const Processes: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+        preview: ({ slug }) => `http://localhost:4321/about`,
+    livePreview: {
+      url: ({collectionConfig, req, data}) => {
+        return `http://localhost:4321/about`
+      },
+    },
   },
   access: {
     read: () => true,
@@ -293,6 +338,12 @@ export const Testimonials: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'clientName',
+        preview: ({ slug }) => `http://localhost:4321/about`,
+    livePreview: {
+      url: ({collectionConfig, req, data}) => {
+        return `http://localhost:4321/about`
+      },
+    },
   },
   access: {
     read: () => true,
@@ -312,13 +363,6 @@ export const Testimonials: CollectionConfig = {
       name: 'companyName',
       type: 'text',
       required: true,
-    },
-    {
-      name: 'order',
-      type: 'number',
-      admin: {
-        description: 'Lower numbers appear first',
-      },
     },
   ],
 }

@@ -10,7 +10,7 @@ import { r2Storage } from '@payloadcms/storage-r2'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { Services, Processes, Projects, Testimonials, ParentServices } from './collections/Lots'
+import { ParentServices, Processes, Projects, Services, Testimonials } from './collections/Lots'
 import { HomePageGlobals } from '@/collections/global/HomePageGlobals'
 import {
   CardBulletPointSection,
@@ -18,6 +18,12 @@ import {
   SingleColumnCenterRichTextBlock,
   SpacerBlock,
 } from '@/collections/blocks/blocks'
+import { AboutPageGlobals } from '@/collections/global/AboutPageGlobals'
+import { OurWorkPageGlobals } from '@/collections/global/OurWorkPageGlobals'
+import { ContactPageGlobals } from '@/collections/global/ContactPageGlobals'
+import { SentPageGlobals } from '@/collections/global/SentPageGlobals'
+import { ServicePageGlobals } from '@/collections/global/ServicePageGlobals'
+
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -37,13 +43,79 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     livePreview: {
-      url: 'http://localhost:4321',
-      collections: ['projects', 'parent-services']
+      // url: ({collectionConfig, globalConfig, req, locale, data}) => {
+      //
+      // },
+      collections: ['projects', 'parent-services', 'services'],
+      globals: ['homePageGlobals'],
+      breakpoints: [
+        {
+          label: 'Mobile Small',
+          name: 'mobile-sm',
+          width: 320,
+          height: 568,
+        },
+        {
+          label: 'Mobile',
+          name: 'mobile',
+          width: 375,
+          height: 667,
+        },
+        {
+          label: 'Mobile Large',
+          name: 'mobile-lg',
+          width: 414,
+          height: 896,
+        },
+        {
+          label: 'Tablet',
+          name: 'tablet',
+          width: 768,
+          height: 1024,
+        },
+        {
+          label: 'Tablet Large',
+          name: 'tablet-lg',
+          width: 834,
+          height: 1112,
+        },
+        {
+          label: 'Laptop',
+          name: 'laptop',
+          width: 1024,
+          height: 768,
+        },
+        {
+          label: 'Laptop Large',
+          name: 'laptop-lg',
+          width: 1440,
+          height: 900,
+        },
+        {
+          label: 'Desktop',
+          name: 'desktop',
+          width: 1920,
+          height: 1080,
+        },
+        {
+          label: 'Wide Desktop',
+          name: 'desktop-wide',
+          width: 2560,
+          height: 1440,
+        },
+      ],
     },
   },
   blocks: [SingleColumnCenterRichTextBlock, SpacerBlock, CardBulletPointSection, FeatureCardBlock],
-  collections: [Users, Media, Services, Projects, ParentServices],
-  globals: [HomePageGlobals],
+  collections: [Users, Media, Services, Projects, ParentServices, Testimonials, Processes],
+  globals: [
+    HomePageGlobals,
+    AboutPageGlobals,
+    OurWorkPageGlobals,
+    ContactPageGlobals,
+    SentPageGlobals,
+    ServicePageGlobals
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
