@@ -6,7 +6,7 @@ import {
   SpacerBlock,
 } from '@/collections/blocks/blocks'
 
-const previewBaseurl = process.env.LIVE_PREVIEW_URL ?? 'https://asidik.tomwojciechowski.workers.dev'
+const previewBaseurl = process.env.LIVE_PREVIEW_URL ?? 'https://asidik-draft.tomwojciechowski.workers.dev'
 
 // Collections
 export const Services: CollectionConfig = {
