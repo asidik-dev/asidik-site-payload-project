@@ -2,7 +2,7 @@
 import { sqliteD1Adapter } from '@payloadcms/db-d1-sqlite' // database-adapter-import
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
-import { buildConfig } from 'payload'
+import { buildConfig, PaginatedDocs } from 'payload'
 import { fileURLToPath } from 'url'
 import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
 import { GetPlatformProxyOptions } from 'wrangler'
@@ -24,6 +24,8 @@ import { ContactPageGlobals } from '@/collections/global/ContactPageGlobals'
 import { SentPageGlobals } from '@/collections/global/SentPageGlobals'
 import { ServicePageGlobals } from '@/collections/global/ServicePageGlobals'
 
+import {Media as MediaType} from "src/payload-types"
+import { updateImage } from '@/util/images'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -31,13 +33,17 @@ const dirname = path.dirname(filename)
 const isCLI = process.argv.some((value) => value.match(/^(generate|migrate):?/))
 const isProduction = process.env.NODE_ENV === 'production'
 
-const cloudflare =
+export const cloudflare =
   isCLI || !isProduction
     ? await getCloudflareContextFromWrangler()
     : await getCloudflareContext({ async: true })
 
 export default buildConfig({
   admin: {
+    components: {
+      actions: ['/components/admin/GenerateImages#GenerateImagesButton'],
+      beforeDashboard: []
+    },
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
@@ -122,6 +128,31 @@ export default buildConfig({
     defaultLocale: 'en', // required
     fallback: true, // defaults to true
   },
+  endpoints: [
+    {
+      path: '/generateImages',
+      method: 'get',
+      handler: async (req) => {
+        if (!req.user) {
+          return Response.json({message: "Nope"}, {status: 401, statusText: 'Not authenticated'});
+        }
+
+        const mediaCollection: PaginatedDocs<MediaType> = await req.payload.db.find({
+          collection: 'media'
+        });
+
+        const mediaCollectionDocs = mediaCollection.docs;
+        for (const mediaCollectionDoc of mediaCollectionDocs) {
+          //Lets make a fake one for each of the previews to test this
+          await updateImage(mediaCollectionDoc, cloudflare.env.R2, req.payload.db);
+        }
+
+        return Response.json({
+          message: `All good`,
+        })
+      },
+    },
+  ],
   blocks: [SingleColumnCenterRichTextBlock, SpacerBlock, CardBulletPointSection, FeatureCardBlock],
   collections: [Users, Media, Services, Projects, ParentServices, Testimonials, Processes],
   globals: [
