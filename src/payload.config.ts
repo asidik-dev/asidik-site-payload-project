@@ -24,7 +24,7 @@ import { ContactPageGlobals } from '@/collections/global/ContactPageGlobals'
 import { SentPageGlobals } from '@/collections/global/SentPageGlobals'
 import { ServicePageGlobals } from '@/collections/global/ServicePageGlobals'
 
-import {Media as MediaType} from "src/payload-types"
+import { Media as MediaType } from 'src/payload-types'
 import { updateImage } from '@/util/images'
 
 const filename = fileURLToPath(import.meta.url)
@@ -42,7 +42,7 @@ export default buildConfig({
   admin: {
     components: {
       actions: ['/components/admin/GenerateImages#GenerateImagesButton'],
-      beforeDashboard: []
+      beforeDashboard: [],
     },
     user: Users.slug,
     importMap: {
@@ -112,9 +112,8 @@ export default buildConfig({
         },
       ],
     },
-
   },
-    localization: {
+  localization: {
     locales: [
       {
         label: 'English',
@@ -134,22 +133,33 @@ export default buildConfig({
       method: 'get',
       handler: async (req) => {
         if (!req.user) {
-          return Response.json({message: "Nope"}, {status: 401, statusText: 'Not authenticated'});
+          return Response.json(
+            { message: 'Nope' },
+            { status: 401, statusText: 'Not authenticated' },
+          )
         }
 
-        const mediaCollection: PaginatedDocs<MediaType> = await req.payload.db.find({
-          collection: 'media'
-        });
+        try {
+          const mediaCollection: PaginatedDocs<MediaType> = await req.payload.db.find({
+            collection: 'media',
+          })
 
-        const mediaCollectionDocs = mediaCollection.docs;
-        for (const mediaCollectionDoc of mediaCollectionDocs) {
-          //Lets make a fake one for each of the previews to test this
-          await updateImage(mediaCollectionDoc, cloudflare.env.R2, req.payload.db);
+          const mediaCollectionDocs = mediaCollection.docs
+          for (const mediaCollectionDoc of mediaCollectionDocs) {
+            //Lets make a fake one for each of the previews to test this
+            await updateImage(mediaCollectionDoc, cloudflare.env.R2, req.payload.db)
+          }
+
+          return Response.json({
+            message: `All good`,
+          })
+        } catch (err) {
+          return Response.json({
+            error: err
+          }, {
+            status: 500
+          })
         }
-
-        return Response.json({
-          message: `All good`,
-        })
       },
     },
   ],
@@ -161,7 +171,7 @@ export default buildConfig({
     OurWorkPageGlobals,
     ContactPageGlobals,
     SentPageGlobals,
-    ServicePageGlobals
+    ServicePageGlobals,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
