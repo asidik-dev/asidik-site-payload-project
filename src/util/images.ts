@@ -17,7 +17,7 @@ export const updateImage = async (mediaCollectionDoc: Media, R2: R2Bucket, db: D
 
   const token = '8CZ46ToRDCNkjLhQ9WfULby4TVMjjPcF7CcjSzSf'
 
-  const fileResult = await fetch(' https://webp-worker.tomwojciechowski.workers.dev', {
+  const fileResult = await fetch(` https://webp-worker.tomwojciechowski.workers.dev/${mediaCollectionDoc.filename}`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -25,14 +25,14 @@ export const updateImage = async (mediaCollectionDoc: Media, R2: R2Bucket, db: D
     body: originalBuffer,
   })
 
-  const calculatedFileName = `${fileName}-full.webp`
+  const calculatedFileName = `${fileName}-full.avif`
 
   const returnedImage = await fileResult.arrayBuffer()
   const res = await R2.put(calculatedFileName, returnedImage)
 
   full.width = mediaCollectionDoc.width
   full.height = mediaCollectionDoc.height
-  full.mimeType = 'image/webp'
+  full.mimeType = 'image/avif'
   full.filesize = returnedImage.byteLength
   full.filename = calculatedFileName
   full.url = `/api/media/file/${calculatedFileName}`

@@ -139,23 +139,18 @@ export default buildConfig({
           )
         }
 
-        console.log("hiy it")
-
         try {
           const mediaCollection: PaginatedDocs<MediaType> = await req.payload.db.find({
             collection: 'media',
           })
 
 
-          console.log("lookup")
           const mediaCollectionDocs = mediaCollection.docs
           for (const mediaCollectionDoc of mediaCollectionDocs) {
-            console.log("pre update")
             //Lets make a fake one for each of the previews to test this
             await updateImage(mediaCollectionDoc, cloudflare.env.R2, req.payload.db)
           }
 
-          console.log("response");
           return Response.json({
             message: `All good`,
           })

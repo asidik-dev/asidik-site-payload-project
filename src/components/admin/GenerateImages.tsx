@@ -16,7 +16,6 @@ function GenerateImagesButton() {
 
         if (res.status === 200) {
           const success = toast.success('Successfully generated images')
-          console.log(success)
         } else {
           toast.error('Failed to generate images')
         }

@@ -31,7 +31,7 @@ export const Media: CollectionConfig = {
       {
         name: 'full',
         formatOptions: {
-          format: 'webp',
+          format: 'avif',
         },
       },
     ],
