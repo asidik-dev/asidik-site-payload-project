@@ -146,16 +146,21 @@ export default buildConfig({
             collection: 'media',
           })
 
+
+          console.log("lookup")
           const mediaCollectionDocs = mediaCollection.docs
           for (const mediaCollectionDoc of mediaCollectionDocs) {
+            console.log("pre update")
             //Lets make a fake one for each of the previews to test this
             await updateImage(mediaCollectionDoc, cloudflare.env.R2, req.payload.db)
           }
 
+          console.log("response");
           return Response.json({
             message: `All good`,
           })
         } catch (err) {
+          console.log(JSON.stringify(err, null, 2));
           return Response.json({
             error: err,
           }, {
