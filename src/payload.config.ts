@@ -139,6 +139,8 @@ export default buildConfig({
           )
         }
 
+        console.log("hiy it")
+
         try {
           const mediaCollection: PaginatedDocs<MediaType> = await req.payload.db.find({
             collection: 'media',
@@ -155,7 +157,7 @@ export default buildConfig({
           })
         } catch (err) {
           return Response.json({
-            error: err
+            error: err,
           }, {
             status: 500
           })
