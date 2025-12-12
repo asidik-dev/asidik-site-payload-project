@@ -17,15 +17,16 @@ export const Media: CollectionConfig = {
     },
   ],
   hooks: {
-    afterChange: [
-      async ({collection, req, data, doc, operation}) => {
-
-        const media: MediaType = doc as MediaType;
-        await updateImage(media, cloudflare.env.R2, req.payload.db)
-
-      }
-    ]
+    // afterChange: [
+    //   async ({collection, req, data, doc, operation}) => {
+    //
+    //     const media: MediaType = doc as MediaType;
+    //     await updateImage(media, cloudflare.env.R2, req.payload.db)
+    //
+    //   }
+    // ]
   },
+
   upload: {
     imageSizes: [
       {
@@ -36,7 +37,7 @@ export const Media: CollectionConfig = {
       },
     ],
     // These are not supported on Workers yet due to lack of sharp
-    crop: false,
-    focalPoint: false,
+    crop: true,
+    focalPoint: true,
   },
 }

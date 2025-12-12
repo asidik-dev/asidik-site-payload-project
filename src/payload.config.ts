@@ -26,7 +26,7 @@ import { ServicePageGlobals } from '@/collections/global/ServicePageGlobals'
 
 import { Media as MediaType } from 'src/payload-types'
 import { updateImage } from '@/util/images'
-
+import { cloudFlareSharpImpl } from '@/util/cf/sharpimpl'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -39,6 +39,7 @@ export const cloudflare =
     : await getCloudflareContext({ async: true })
 
 export default buildConfig({
+  sharp: cloudFlareSharpImpl,
   admin: {
     components: {
       actions: ['/components/admin/GenerateImages#GenerateImagesButton'],
