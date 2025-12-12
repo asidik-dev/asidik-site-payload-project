@@ -479,11 +479,12 @@ class CFSharpImpl implements sharp.Sharp {
 
       const jsonResponse = await fileResult.json<CFImageResponse>()
 
-      console.log(jsonResponse)
+      console.log("Got the resposne", jsonResponse)
 
       this.metaData = jsonResponse.metaData
       this.outputBuffer = Buffer.from(jsonResponse.imageData.image.data)
       this.outputInfo = jsonResponse.imageData.outputInfo
+      console.log("finished")
     } catch (error) {
       console.log("oopsi", error)
     }
