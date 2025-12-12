@@ -79,6 +79,7 @@ export interface Config {
     'parent-services': ParentService;
     testimonials: Testimonial;
     processes: Process;
+    webservices: Webservice;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -93,6 +94,7 @@ export interface Config {
     'parent-services': ParentServicesSelect<false> | ParentServicesSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     processes: ProcessesSelect<false> | ProcessesSelect<true>;
+    webservices: WebservicesSelect<false> | WebservicesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -487,6 +489,105 @@ export interface Process {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "webservices".
+ */
+export interface Webservice {
+  id: number;
+  name: string;
+  description: string;
+  slug: string;
+  hero: {
+    title: string;
+    subheading: string;
+    buttonText: string;
+    image: number | Media;
+  };
+  pageSections?:
+    | (
+        | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'SpacerBlock';
+          }
+        | {
+            Copy: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'SingleColumnCenterRichTextBlock';
+          }
+        | {
+            headerText: string;
+            subheading: string;
+            bulletPoints: {
+              title: string;
+              description: string;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'BulletPointBlock';
+            }[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'CardBulletPointSection';
+          }
+        | {
+            text: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            imageLeft: boolean;
+            image: number | Media;
+            button?:
+              | {
+                  buttonText: string;
+                  buttonLink: string;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'ButtonBlock';
+                }[]
+              | null;
+            counter?: number | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'FeatureCardBlock';
+          }
+      )[]
+    | null;
+  seo: {
+    title: string;
+    description: string;
+    keywords?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -536,6 +637,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'processes';
         value: number | Process;
+      } | null)
+    | ({
+        relationTo: 'webservices';
+        value: number | Webservice;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -788,6 +893,92 @@ export interface ProcessesSelect<T extends boolean = true> {
   description?: T;
   processNumber?: T;
   order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "webservices_select".
+ */
+export interface WebservicesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  slug?: T;
+  hero?:
+    | T
+    | {
+        title?: T;
+        subheading?: T;
+        buttonText?: T;
+        image?: T;
+      };
+  pageSections?:
+    | T
+    | {
+        SpacerBlock?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+        SingleColumnCenterRichTextBlock?:
+          | T
+          | {
+              Copy?: T;
+              id?: T;
+              blockName?: T;
+            };
+        CardBulletPointSection?:
+          | T
+          | {
+              headerText?: T;
+              subheading?: T;
+              bulletPoints?:
+                | T
+                | {
+                    BulletPointBlock?:
+                      | T
+                      | {
+                          title?: T;
+                          description?: T;
+                          id?: T;
+                          blockName?: T;
+                        };
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        FeatureCardBlock?:
+          | T
+          | {
+              text?: T;
+              imageLeft?: T;
+              image?: T;
+              button?:
+                | T
+                | {
+                    ButtonBlock?:
+                      | T
+                      | {
+                          buttonText?: T;
+                          buttonLink?: T;
+                          id?: T;
+                          blockName?: T;
+                        };
+                  };
+              counter?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        keywords?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

@@ -30,6 +30,7 @@ export const updateImage = async (mediaCollectionDoc: Media, R2: R2Bucket, db: D
   const returnedImage = await fileResult.arrayBuffer()
   const res = await R2.put(calculatedFileName, returnedImage)
 
+
   full.width = mediaCollectionDoc.width
   full.height = mediaCollectionDoc.height
   full.mimeType = 'image/avif'

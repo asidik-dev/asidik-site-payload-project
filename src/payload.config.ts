@@ -26,6 +26,7 @@ import { ServicePageGlobals } from '@/collections/global/ServicePageGlobals'
 
 import { Media as MediaType } from 'src/payload-types'
 import { updateImage } from '@/util/images'
+import { WebServices } from '@/collections/service-ads/webdev'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -166,7 +167,7 @@ export default buildConfig({
     },
   ],
   blocks: [SingleColumnCenterRichTextBlock, SpacerBlock, CardBulletPointSection, FeatureCardBlock],
-  collections: [Users, Media, Services, Projects, ParentServices, Testimonials, Processes],
+  collections: [Users, Media, Services, Projects, ParentServices, Testimonials, Processes, WebServices],
   globals: [
     HomePageGlobals,
     AboutPageGlobals,
