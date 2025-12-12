@@ -449,39 +449,44 @@ class CFSharpImpl implements sharp.Sharp {
   }
 
   async doConvert() {
-    const token = '8CZ46ToRDCNkjLhQ9WfULby4TVMjjPcF7CcjSzSf'
+    try {
+      const token = '8CZ46ToRDCNkjLhQ9WfULby4TVMjjPcF7CcjSzSf'
 
-    const options = {
-      trimOptions: this.trimOptions,
-      targetFormat: this.targetFormat,
-      targetFormationOptions: this.targetFormatOptions,
-      sharpOptions: this.options,
-      resizeOptions: this.resizeOptions,
-      resizeHeight: this.resizeHeight,
-      resizeWidthOrOptions: this.resizeWidthOrOptions,
-      extractRegion: this.extractRegion,
-      input: this.convertBuffer(this.input),
-    }
+      const options = {
+        trimOptions: this.trimOptions,
+        targetFormat: this.targetFormat,
+        targetFormationOptions: this.targetFormatOptions,
+        sharpOptions: this.options,
+        resizeOptions: this.resizeOptions,
+        resizeHeight: this.resizeHeight,
+        resizeWidthOrOptions: this.resizeWidthOrOptions,
+        extractRegion: this.extractRegion,
+        input: this.convertBuffer(this.input),
+      }
 
-    const payload = JSON.stringify(options)
-    const fileResult = await fetch(
-      `https://cf-sharp-container-worker.tomwojciechowski.workers.dev`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
+      console.log('Trying to convert')
+      const payload = JSON.stringify(options)
+      const fileResult = await fetch(
+        `https://cf-sharp-container-worker.tomwojciechowski.workers.dev`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: payload,
         },
-        body: payload,
-      },
-    )
+      )
 
-    const jsonResponse = await fileResult.json<CFImageResponse>()
+      const jsonResponse = await fileResult.json<CFImageResponse>()
 
-    console.log(jsonResponse)
+      console.log(jsonResponse)
 
-    this.metaData = jsonResponse.metaData
-    this.outputBuffer = Buffer.from(jsonResponse.imageData.image.data)
-    this.outputInfo = jsonResponse.imageData.outputInfo
+      this.metaData = jsonResponse.metaData
+      this.outputBuffer = Buffer.from(jsonResponse.imageData.image.data)
+      this.outputInfo = jsonResponse.imageData.outputInfo
+    } catch (error) {
+      console.log("oopsi", error)
+    }
   }
 
   withMetadata(withMetadata?: sharp.WriteableMetadata): sharp.Sharp {
@@ -514,15 +519,15 @@ class CFSharpImpl implements sharp.Sharp {
       } else {
         if (optionsOrCallback?.resolveWithObject) {
           return new Promise<{ data: Buffer; info: OutputInfo }>(async (resolve, reject) => {
-            await this.doConvert();
-            this.convertedBuffer = true;
+            await this.doConvert()
+            this.convertedBuffer = true
 
             resolve({ data: this.outputBuffer, info: this.outputInfo })
           })
         } else {
           return new Promise<Buffer>(async (resolve, reject) => {
-            await this.doConvert();
-            this.convertedBuffer = true;
+            await this.doConvert()
+            this.convertedBuffer = true
 
             resolve(this.outputBuffer)
           })
