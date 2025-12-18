@@ -66,6 +66,7 @@ export interface Config {
     users: UserAuthOperations;
   };
   blocks: {
+    ButtonBlock: ButtonBlock;
     SingleColumnCenterRichTextBlock: SingleColumnCenterRichTextBlock;
     SpacerBlock: SpacerBlock;
     CardBulletPointSection: CardBulletPointSection;
@@ -146,6 +147,17 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ButtonBlock".
+ */
+export interface ButtonBlock {
+  buttonText: string;
+  buttonLink: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ButtonBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

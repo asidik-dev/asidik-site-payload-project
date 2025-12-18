@@ -20,7 +20,7 @@ export const ButtonBlock : Block = {
       name: 'buttonLink',
       type: 'text',
       required: true,
-    },
+    }
   ],
 }
 

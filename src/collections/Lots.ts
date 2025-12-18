@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import {
+  ButtonBlock,
   CardBulletPointSection,
   FeatureCardBlock,
   SingleColumnCenterRichTextBlock,

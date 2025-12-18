@@ -13,6 +13,7 @@ import { Media } from './collections/Media'
 import { ParentServices, Processes, Projects, Services, Testimonials } from './collections/Lots'
 import { HomePageGlobals } from '@/collections/global/HomePageGlobals'
 import {
+  ButtonBlock,
   CardBulletPointSection,
   FeatureCardBlock,
   SingleColumnCenterRichTextBlock,
@@ -166,7 +167,7 @@ export default buildConfig({
       },
     },
   ],
-  blocks: [SingleColumnCenterRichTextBlock, SpacerBlock, CardBulletPointSection, FeatureCardBlock],
+  blocks: [ButtonBlock, SingleColumnCenterRichTextBlock, SpacerBlock, CardBulletPointSection, FeatureCardBlock],
   collections: [Users, Media, Services, Projects, ParentServices, Testimonials, Processes, WebServices],
   globals: [
     HomePageGlobals,
