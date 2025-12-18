@@ -8,6 +8,22 @@ export const SpacerBlock: Block = {
   ],
 }
 
+export const ButtonBlock : Block = {
+  slug: 'ButtonBlock', // required
+  fields: [
+    {
+      name: 'buttonText',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'buttonLink',
+      type: 'text',
+      required: true,
+    },
+  ],
+}
+
 export const SingleColumnCenterRichTextBlock: Block = {
   slug: 'SingleColumnCenterRichTextBlock', // required
   fields: [
@@ -18,6 +34,15 @@ export const SingleColumnCenterRichTextBlock: Block = {
       editor: lexicalEditor({
         features: ({ defaultFeatures }) => [...defaultFeatures],
       }),
+    },
+    {
+      name: 'Action',
+      type: 'blocks',
+      blocks: [],
+      minRows: 1,
+      maxRows: 1,
+      blockReferences: [ButtonBlock],
+      required: false,
     },
   ],
 }
@@ -64,21 +89,7 @@ export const CardBulletPointSection: Block = {
   ],
 }
 
-export const ButtonBlock : Block = {
-  slug: 'ButtonBlock', // required
-  fields: [
-    {
-      name: 'buttonText',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'buttonLink',
-      type: 'text',
-      required: true,
-    },
-  ],
-}
+
 
 export const FeatureCardBlock: Block = {
   slug: 'FeatureCardBlock', // required

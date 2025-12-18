@@ -167,6 +167,15 @@ export interface SingleColumnCenterRichTextBlock {
     };
     [k: string]: unknown;
   };
+  Action?:
+    | {
+        buttonText: string;
+        buttonLink: string;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'ButtonBlock';
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'SingleColumnCenterRichTextBlock';
@@ -330,6 +339,15 @@ export interface Service {
               };
               [k: string]: unknown;
             };
+            Action?:
+              | {
+                  buttonText: string;
+                  buttonLink: string;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'ButtonBlock';
+                }[]
+              | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'SingleColumnCenterRichTextBlock';
@@ -525,6 +543,15 @@ export interface Webservice {
               };
               [k: string]: unknown;
             };
+            Action?:
+              | {
+                  buttonText: string;
+                  buttonLink: string;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'ButtonBlock';
+                }[]
+              | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'SingleColumnCenterRichTextBlock';
@@ -769,6 +796,18 @@ export interface ServicesSelect<T extends boolean = true> {
           | T
           | {
               Copy?: T;
+              Action?:
+                | T
+                | {
+                    ButtonBlock?:
+                      | T
+                      | {
+                          buttonText?: T;
+                          buttonLink?: T;
+                          id?: T;
+                          blockName?: T;
+                        };
+                  };
               id?: T;
               blockName?: T;
             };
@@ -926,6 +965,18 @@ export interface WebservicesSelect<T extends boolean = true> {
           | T
           | {
               Copy?: T;
+              Action?:
+                | T
+                | {
+                    ButtonBlock?:
+                      | T
+                      | {
+                          buttonText?: T;
+                          buttonLink?: T;
+                          id?: T;
+                          blockName?: T;
+                        };
+                  };
               id?: T;
               blockName?: T;
             };

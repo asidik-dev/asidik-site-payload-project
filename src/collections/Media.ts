@@ -23,6 +23,8 @@ export const Media: CollectionConfig = {
         const media: MediaType = doc as MediaType;
         await updateImage(media, cloudflare.env.R2, req.payload.db)
 
+        //clear the cache bro
+
       }
     ]
   },
