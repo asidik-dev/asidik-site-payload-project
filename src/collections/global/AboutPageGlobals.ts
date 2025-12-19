@@ -1,6 +1,6 @@
 import { GlobalConfig } from 'payload'
 
-const previewBaseurl = process.env.LIVE_PREVIEW_URL ?? 'https://asidik-draft.tomwojciechowski.workers.dev'
+const previewBaseurl = process.env.LIVE_PREVIEW_URL ?? 'https://draft.asidik.com'
 
 export const AboutPageGlobals: GlobalConfig = {
   slug: 'aboutPageGlobals',
