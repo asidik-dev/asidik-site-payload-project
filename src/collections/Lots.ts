@@ -55,7 +55,7 @@ export const Services: CollectionConfig = {
       type: 'textarea',
       required: true,
       defaultValue: 'meow',
-      maxLength: 100000,
+      maxLength: 1000000,
       admin: {
         description: 'Lottie animation JSON',
         components: {
